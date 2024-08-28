@@ -1,0 +1,190 @@
+import React, { useState } from "react";
+import { ReactComponent as MaleIcon } from "../assets/male.svg";
+import { ReactComponent as FemaleIcon } from "../assets/female.svg";
+import { ReactComponent as EmailIcon } from "../assets/email.svg";
+import { ReactComponent as LocationIcon } from "../assets/location.svg";
+import { ReactComponent as ContactIcon } from "../assets/contact.svg";
+import { ReactComponent as CakeIcon } from "../assets/cake.svg";
+import { ReactComponent as BunIcon } from "../assets/bun.svg";
+import { ReactComponent as DeleteIcon } from "../assets/delete.svg";
+import { ReactComponent as EditIcon } from "../assets/edit.svg";
+import { ReactComponent as FlagIcon } from "../assets/flag.svg";
+
+const Card = ({ data, viewMode }) => {
+  const [dropdown, setDropdown] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  const formateDate = (dobString) => {
+    const date = new Date(dobString);
+    const day = String(date.getUTCDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = String(date.getUTCFullYear()).slice(-2);
+
+    return `${day}-${month}-${year}`;
+  };
+
+  const handleDropdown = (id) => {
+    let elem = document.querySelector(".dropdown-" + id);
+    let elemArr = document.querySelectorAll(".drop-down-popup");
+    Array.from(elemArr).forEach((item) => item.classList.remove("open"));
+    if (elem) {
+      elem.classList.add("open");
+      setDropdown(true);
+    }
+  };
+
+  const handleCardClick = (id) => {
+    let pelem = document.querySelector(".popup-" + id);
+    let pelemArr = document.querySelectorAll(".popup-container");
+    Array.from(pelemArr).forEach((item) => item.classList.remove("open"));
+    if (pelem) {
+      pelem.classList.add("open");
+      setIsPopupOpen(true);
+    }
+  };
+
+  const handleClosePopup = (id) => {
+    let pelem = document.querySelector(".popup-" + id);
+    let pelemArr = document.querySelectorAll(".popup-container");
+    Array.from(pelemArr).forEach((item) => item.classList.remove("open"));
+    //console.log("popp close");
+  };
+
+  return (
+    <div className={`card-list ${viewMode}`}>
+      {data &&
+        data.length > 0 &&
+        data.map((item, index) => {
+          const formattedDate = formateDate(item.dob.date);
+
+          return (
+            <>
+              <div key={index} id={index} className="card">
+                <div className="button" onClick={() => handleDropdown(index)}>
+                  <BunIcon />
+                </div>
+                <div
+                  className="card-inner flex justify-start align-center"
+                  onClick={() => handleCardClick(index)}
+                >
+                  <ToolTip tid={index} dropdown={dropdown} />
+
+                  <div
+                    className={`card-img ${
+                      item.gender === "female" ? "purple" : ""
+                    }`}
+                  >
+                    <img
+                      src={item.picture.medium}
+                      width={72}
+                      height={72}
+                      alt={item.name.first}
+                    />
+                  </div>
+                  <div className="card-body">
+                    <div className="flex align-center m-b-5">
+                      <span className="card-icon">
+                        {item.gender === "male" ? (
+                          <MaleIcon className="icon" />
+                        ) : (
+                          <FemaleIcon className="icon" />
+                        )}
+                      </span>
+                      <span className="card-title card-name font-weight-600">
+                        {item.name.title} {item.name.first} {item.name.last}
+                      </span>
+                    </div>
+
+                    <div className="flex align-center m-b-5">
+                      <span className="card-icon">
+                        <EmailIcon className="icon" />
+                      </span>
+                      <span className="card-title card-email font-14">
+                        {item.email}
+                      </span>
+                    </div>
+
+                    <div className="flex align-center m-b-5">
+                      <span className="card-icon">
+                        <LocationIcon className="icon" />
+                      </span>
+                      <span className="card-title font-14 truncate">
+                        {item.location.city}, {item.location.state},
+                        {item.location.country}
+                      </span>
+                    </div>
+
+                    <div className="flex align-center m-b-5">
+                      <span className="card-icon">
+                        <ContactIcon className="icon" />
+                      </span>
+                      <span className="card-title font-14">{item.phone}</span>
+                    </div>
+
+                    <div className="flex align-center">
+                      <span className="card-icon">
+                        <CakeIcon className="icon" />
+                      </span>
+                      <span className="card-title font-14">
+                        {formattedDate}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <PopupContainer
+                popid={index}
+                handleClosePopup={handleClosePopup}
+              />
+            </>
+          );
+        })}
+    </div>
+  );
+};
+
+const PopupContainer = (props) => {
+  //console.log(props);
+  return (
+    <div
+      className={`popup-container ${
+        props.popid >= 0 ? "popup-" + props.popid : ""
+      }`}
+    >
+      <>
+        <span className="close" onClick={() => props.handleClosePopup()}>
+          close
+        </span>
+      </>
+    </div>
+  );
+};
+
+const ToolTip = (props) => {
+  //console.log(props);
+  return (
+    <>
+      <div
+        className={`drop-down-popup ${
+          props.tid >= 0 ? "dropdown-" + props.tid : ""
+        }`}
+      >
+        <div className="flex align-center font-14 dropdown-item">
+          <DeleteIcon />
+          Delete
+        </div>
+        <div className="flex align-center font-14 dropdown-item">
+          <EditIcon />
+          Edit
+        </div>
+        <div className="flex align-center font-14 dropdown-item">
+          <FlagIcon />
+          Flag
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Card;
