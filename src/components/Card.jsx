@@ -12,15 +12,13 @@ import { ReactComponent as FlagIcon } from "../assets/flag.svg";
 
 const Card = ({ data, viewMode }) => {
   const [dropdown, setDropdown] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [detail, setDetail] = useState(null);
 
   const formateDate = (dobString) => {
     const date = new Date(dobString);
     const day = String(date.getUTCDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = String(date.getUTCFullYear()).slice(-2);
-
     return `${day}-${month}-${year}`;
   };
 
@@ -34,156 +32,192 @@ const Card = ({ data, viewMode }) => {
     }
   };
 
-  const handleCardClick = (id) => {
-    let pelem = document.querySelector(".popup-" + id);
-    let pelemArr = document.querySelectorAll(".popup-container");
-    Array.from(pelemArr).forEach((item) => item.classList.remove("open"));
-    if (pelem) {
-      pelem.classList.add("open");
-      setIsPopupOpen(true);
-    }
-  };
-
-  const handleClosePopup = (id) => {
-    let pelem = document.querySelector(".popup-" + id);
-    let pelemArr = document.querySelectorAll(".popup-container");
-    Array.from(pelemArr).forEach((item) => item.classList.remove("open"));
-    //console.log("popp close");
+  const handleCardClick = (student) => {
+    setDetail(student);
   };
 
   return (
-    <div className={`card-list ${viewMode}`}>
-      {data &&
-        data.length > 0 &&
-        data.map((item, index) => {
-          const formattedDate = formateDate(item.dob.date);
+    <>
+      <div className={`card-list ${viewMode}`}>
+        {data &&
+          data.length > 0 &&
+          data.map((item, index) => {
+            const formattedDate = formateDate(item.dob.date);
 
-          return (
-            <>
-              <div key={index} id={index} className="card">
-                <div className="button" onClick={() => handleDropdown(index)}>
-                  <BunIcon />
-                </div>
-                <div
-                  className="card-inner flex justify-start align-center"
-                  onClick={() => handleCardClick(index)}
-                >
-                  <ToolTip tid={index} dropdown={dropdown} />
-
+            return (
+              <>
+                <div key={index} id={index} className="card">
+                  <div className="button" onClick={() => handleDropdown(index)}>
+                    <BunIcon />
+                  </div>
                   <div
-                    className={`card-img ${
-                      item.gender === "female" ? "purple" : ""
-                    }`}
+                    className="card-inner flex justify-start align-center"
+                    onClick={() => handleCardClick(item)}
                   >
-                    <img
-                      src={item.picture.medium}
-                      width={72}
-                      height={72}
-                      alt={item.name.first}
-                    />
-                  </div>
-                  <div className="card-body">
-                    <div className="flex align-center m-b-5">
-                      <span className="card-icon">
-                        {item.gender === "male" ? (
-                          <MaleIcon className="icon" />
-                        ) : (
-                          <FemaleIcon className="icon" />
-                        )}
-                      </span>
-                      <span className="card-title card-name font-weight-600">
-                        {item.name.title} {item.name.first} {item.name.last}
-                      </span>
-                    </div>
+                    <ToolTip tid={index} dropdown={dropdown} />
 
-                    <div className="flex align-center m-b-5">
-                      <span className="card-icon">
-                        <EmailIcon className="icon" />
-                      </span>
-                      <span className="card-title card-email font-14">
-                        {item.email}
-                      </span>
+                    <div
+                      className={`card-img ${
+                        item.gender === "female" ? "purple" : ""
+                      }`}
+                    >
+                      <img
+                        src={item.picture.medium}
+                        width={72}
+                        height={72}
+                        alt={item.name.first}
+                      />
                     </div>
+                    <div className="card-body">
+                      <div className="flex align-center m-b-5">
+                        <span className="card-icon">
+                          {item.gender === "male" ? (
+                            <MaleIcon className="icon" />
+                          ) : (
+                            <FemaleIcon className="icon" />
+                          )}
+                        </span>
+                        <span className="card-title card-name font-weight-600">
+                          {item.name.title} {item.name.first} {item.name.last}
+                        </span>
+                      </div>
 
-                    <div className="flex align-center m-b-5">
-                      <span className="card-icon">
-                        <LocationIcon className="icon" />
-                      </span>
-                      <span className="card-title font-14 truncate">
-                        {item.location.city}, {item.location.state},
-                        {item.location.country}
-                      </span>
-                    </div>
+                      <div className="flex align-center m-b-5">
+                        <span className="card-icon">
+                          <EmailIcon className="icon" />
+                        </span>
+                        <span className="card-title card-email font-14">
+                          {item.email}
+                        </span>
+                      </div>
 
-                    <div className="flex align-center m-b-5">
-                      <span className="card-icon">
-                        <ContactIcon className="icon" />
-                      </span>
-                      <span className="card-title font-14">{item.phone}</span>
-                    </div>
+                      <div className="flex align-center m-b-5">
+                        <span className="card-icon">
+                          <LocationIcon className="icon" />
+                        </span>
+                        <span className="card-title font-14 truncate">
+                          {item.location.city}, {item.location.state},
+                          {item.location.country}
+                        </span>
+                      </div>
 
-                    <div className="flex align-center">
-                      <span className="card-icon">
-                        <CakeIcon className="icon" />
-                      </span>
-                      <span className="card-title font-14">
-                        {formattedDate}
-                      </span>
+                      <div className="flex align-center m-b-5">
+                        <span className="card-icon">
+                          <ContactIcon className="icon" />
+                        </span>
+                        <span className="card-title font-14">{item.phone}</span>
+                      </div>
+
+                      <div className="flex align-center">
+                        <span className="card-icon">
+                          <CakeIcon className="icon" />
+                        </span>
+                        <span className="card-title font-14">
+                          {formattedDate}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <PopupContainer
-                popid={index}
-                handleClosePopup={handleClosePopup}
-              />
-            </>
-          );
-        })}
-    </div>
+              </>
+            );
+          })}
+      </div>
+      {detail && (
+        <PopupContainer studentData={detail} formateDate={formateDate} />
+      )}
+    </>
   );
 };
 
-const PopupContainer = (props) => {
-  //console.log(props);
+const PopupContainer = ({ studentData, formateDate }) => {
+  const dateofbirth = formateDate(studentData.dob.date);
   return (
-    <div
-      className={`popup-container ${
-        props.popid >= 0 ? "popup-" + props.popid : ""
-      }`}
-    >
-      <>
-        <span className="close" onClick={() => props.handleClosePopup()}>
-          close
-        </span>
-      </>
+    <div className="popup-container">
+      <div className="flex flex-column align-center">
+        <div
+          className={`card-img ${
+            studentData.gender === "female" ? "purple" : ""
+          }`}
+        >
+          <img
+            src={studentData.picture.large}
+            width={72}
+            height={72}
+            alt={studentData.name.first}
+          />
+        </div>
+        <div className="flex align-center m-b-5">
+          <span className="card-icon">
+            {studentData.gender === "male" ? (
+              <MaleIcon className="icon" />
+            ) : (
+              <FemaleIcon className="icon" />
+            )}
+          </span>
+          <span className="card-title card-name font-weight-600">
+            {studentData.name.title} {studentData.name.first}{" "}
+            {studentData.name.last}
+          </span>
+        </div>
+
+        <div className="flex align-center m-b-5">
+          <span className="card-icon">
+            <EmailIcon className="icon" />
+          </span>
+          <span className="card-title card-email font-14">
+            {studentData.email}
+          </span>
+        </div>
+
+        <div className="flex align-center m-b-5">
+          <span className="card-icon">
+            <LocationIcon className="icon" />
+          </span>
+          <span className="card-title font-14 truncate">
+            {studentData.location.city}, {studentData.location.state},
+            {studentData.location.country}
+          </span>
+        </div>
+
+        <div className="flex align-center m-b-5">
+          <span className="card-icon">
+            <ContactIcon className="icon" />
+          </span>
+          <span className="card-title font-14">{studentData.phone}</span>
+        </div>
+
+        <div className="flex align-center">
+          <span className="card-icon">
+            <CakeIcon className="icon" />
+          </span>
+          <span className="card-title font-14">{dateofbirth}</span>
+        </div>
+      </div>
     </div>
   );
 };
 
 const ToolTip = (props) => {
-  //console.log(props);
   return (
-    <>
-      <div
-        className={`drop-down-popup ${
-          props.tid >= 0 ? "dropdown-" + props.tid : ""
-        }`}
-      >
-        <div className="flex align-center font-14 dropdown-item">
-          <DeleteIcon />
-          Delete
-        </div>
-        <div className="flex align-center font-14 dropdown-item">
-          <EditIcon />
-          Edit
-        </div>
-        <div className="flex align-center font-14 dropdown-item">
-          <FlagIcon />
-          Flag
-        </div>
+    <div
+      className={`drop-down-popup ${
+        props.tid >= 0 ? "dropdown-" + props.tid : ""
+      }`}
+    >
+      <div className="flex align-center font-14 dropdown-item">
+        <DeleteIcon />
+        Delete
       </div>
-    </>
+      <div className="flex align-center font-14 dropdown-item">
+        <EditIcon />
+        Edit
+      </div>
+      <div className="flex align-center font-14 dropdown-item">
+        <FlagIcon />
+        Flag
+      </div>
+    </div>
   );
 };
 

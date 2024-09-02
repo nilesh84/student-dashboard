@@ -130,6 +130,10 @@ button:focus-visible {
   justify-content: flex-start;
 }
 
+.justify-center {
+  justify-content: center;
+}
+
 .truncate {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -146,7 +150,7 @@ button:focus-visible {
 }
 
 .m-b-5 {
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem;
 }
 
 .m-b-10 {
@@ -201,8 +205,9 @@ button:focus-visible {
 }
 
 .card-list.list .card-img {
+  flex: 0 0 70px;
+  min-width: 70px;
   height: 70px;
-  width: 70px;
   margin-right: 10px;
 }
 
@@ -474,14 +479,17 @@ button:focus-visible {
   left: 50%;
   border-radius: 25px;
   margin: auto;
-  display: none;
   transform: translate(-50%, -50%);
   z-index: 100;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  align-content: center;
 }
 
-.popup-container.open {
-  display: block;
+.popup-container .card-img {
+  flex: 0 0 200px;
+  width: 200px;
+  margin-bottom: 10px;
 }
 
 @media (min-width: 0) and (max-width: 576px) {
