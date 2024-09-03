@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { ReactComponent as MaleIcon } from "../assets/male.svg";
 import { ReactComponent as FemaleIcon } from "../assets/female.svg";
 import { ReactComponent as EmailIcon } from "../assets/email.svg";
@@ -16,6 +16,7 @@ const Card = ({ data, viewMode }) => {
   const [dropdown, setDropdown] = useState(false);
   const [detail, setDetail] = useState(null);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const popupRef = useRef(null);
 
   const formateDate = (dobString) => {
     const date = new Date(dobString);
@@ -44,6 +45,17 @@ const Card = ({ data, viewMode }) => {
     setDetail(null);
     setIsPopupVisible(false);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (popupRef.current && !popupRef.current.contains(event.target)) {
+        handlePopupClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <>
@@ -137,16 +149,17 @@ const Card = ({ data, viewMode }) => {
           studentData={detail}
           formateDate={formateDate}
           onClose={handlePopupClose}
+          popupRef={popupRef}
         />
       )}
     </>
   );
 };
 
-const PopupContainer = ({ studentData, formateDate, onClose }) => {
+const PopupContainer = ({ studentData, formateDate, onClose, popupRef }) => {
   const dateofbirth = formateDate(studentData.dob.date);
   return (
-    <div className="popup-container">
+    <div className="popup-container" ref={popupRef}>
       <button className="close-popup" onClick={onClose}>
         <CloseIcon />
       </button>
