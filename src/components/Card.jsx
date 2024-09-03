@@ -9,10 +9,13 @@ import { ReactComponent as BunIcon } from "../assets/bun.svg";
 import { ReactComponent as DeleteIcon } from "../assets/delete.svg";
 import { ReactComponent as EditIcon } from "../assets/edit.svg";
 import { ReactComponent as FlagIcon } from "../assets/flag.svg";
+import { ReactComponent as CloseIcon } from "../assets/close.svg";
+import { ReactComponent as DefaultUserIcon } from "../assets/default-user.svg";
 
 const Card = ({ data, viewMode }) => {
   const [dropdown, setDropdown] = useState(false);
   const [detail, setDetail] = useState(null);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
   const formateDate = (dobString) => {
     const date = new Date(dobString);
@@ -34,6 +37,12 @@ const Card = ({ data, viewMode }) => {
 
   const handleCardClick = (student) => {
     setDetail(student);
+    setIsPopupVisible(true);
+  };
+
+  const handlePopupClose = () => {
+    setDetail(null);
+    setIsPopupVisible(false);
   };
 
   return (
@@ -123,17 +132,24 @@ const Card = ({ data, viewMode }) => {
             );
           })}
       </div>
-      {detail && (
-        <PopupContainer studentData={detail} formateDate={formateDate} />
+      {isPopupVisible && detail && (
+        <PopupContainer
+          studentData={detail}
+          formateDate={formateDate}
+          onClose={handlePopupClose}
+        />
       )}
     </>
   );
 };
 
-const PopupContainer = ({ studentData, formateDate }) => {
+const PopupContainer = ({ studentData, formateDate, onClose }) => {
   const dateofbirth = formateDate(studentData.dob.date);
   return (
     <div className="popup-container">
+      <button className="close-popup" onClick={onClose}>
+        <CloseIcon />
+      </button>
       <div className="flex flex-column align-center">
         <div
           className={`card-img ${

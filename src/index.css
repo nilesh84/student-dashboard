@@ -189,7 +189,6 @@ button:focus-visible {
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   padding: 15px;
-  /*overflow: hidden;*/
   position: relative;
 }
 
@@ -209,6 +208,10 @@ button:focus-visible {
   min-width: 70px;
   height: 70px;
   margin-right: 10px;
+}
+
+.card-list.list .card-body {
+  flex: 1;
 }
 
 .card-list.grid .card-inner {
@@ -284,7 +287,8 @@ button:focus-visible {
   border-radius: 25px;
 }
 
-.hamburger-button {
+.hamburger-button,
+.close-popup {
   background-color: #f0f2f5;
   border-radius: 50%;
   overflow: hidden;
@@ -487,9 +491,20 @@ button:focus-visible {
 }
 
 .popup-container .card-img {
-  flex: 0 0 200px;
-  width: 200px;
+  flex: 0 0 150px;
+  width: 150px;
   margin-bottom: 10px;
+}
+
+.close-popup {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  outline: none;
+}
+
+.close-popup svg {
+  flex: 1;
 }
 
 @media (min-width: 0) and (max-width: 576px) {
