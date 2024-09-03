@@ -10,10 +10,9 @@ import { ReactComponent as DeleteIcon } from "../assets/delete.svg";
 import { ReactComponent as EditIcon } from "../assets/edit.svg";
 import { ReactComponent as FlagIcon } from "../assets/flag.svg";
 import { ReactComponent as CloseIcon } from "../assets/close.svg";
-import { ReactComponent as DefaultUserIcon } from "../assets/default-user.svg";
 
 const Card = ({ data, viewMode }) => {
-  const [dropdown, setDropdown] = useState(false);
+  const [dropdown, setDropdown] = useState(null);
   const [detail, setDetail] = useState(null);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const popupRef = useRef(null);
@@ -159,68 +158,70 @@ const Card = ({ data, viewMode }) => {
 const PopupContainer = ({ studentData, formateDate, onClose, popupRef }) => {
   const dateofbirth = formateDate(studentData.dob.date);
   return (
-    <div className="popup-container" ref={popupRef}>
-      <button className="close-popup" onClick={onClose}>
-        <CloseIcon />
-      </button>
-      <div className="flex flex-column align-center">
-        <div
-          className={`card-img ${
-            studentData.gender === "female" ? "purple" : ""
-          }`}
-        >
-          <img
-            src={studentData.picture.large}
-            width={72}
-            height={72}
-            alt={studentData.name.first}
-          />
-        </div>
-        <div className="flex align-center m-b-5">
-          <span className="card-icon">
-            {studentData.gender === "male" ? (
-              <MaleIcon className="icon" />
-            ) : (
-              <FemaleIcon className="icon" />
-            )}
-          </span>
-          <span className="card-title card-name font-weight-600">
-            {studentData.name.title} {studentData.name.first}{" "}
-            {studentData.name.last}
-          </span>
-        </div>
+    <div className="overlay">
+      <div className="popup-container" ref={popupRef}>
+        <button className="close-popup" onClick={onClose}>
+          <CloseIcon />
+        </button>
+        <div className="flex flex-column align-center">
+          <div
+            className={`card-img ${
+              studentData.gender === "female" ? "purple" : ""
+            }`}
+          >
+            <img
+              src={studentData.picture.large}
+              width={72}
+              height={72}
+              alt={studentData.name.first}
+            />
+          </div>
+          <div className="flex align-center m-b-5">
+            <span className="card-icon">
+              {studentData.gender === "male" ? (
+                <MaleIcon className="icon" />
+              ) : (
+                <FemaleIcon className="icon" />
+              )}
+            </span>
+            <span className="card-title card-name font-weight-600">
+              {studentData.name.title} {studentData.name.first}{" "}
+              {studentData.name.last}
+            </span>
+          </div>
 
-        <div className="flex align-center m-b-5">
-          <span className="card-icon">
-            <EmailIcon className="icon" />
-          </span>
-          <span className="card-title card-email font-14">
-            {studentData.email}
-          </span>
-        </div>
+          <div className="flex align-center m-b-5">
+            <span className="card-icon">
+              <EmailIcon className="icon" />
+            </span>
+            <span className="card-title card-email font-14">
+              {studentData.email}
+            </span>
+          </div>
 
-        <div className="flex align-center m-b-5">
-          <span className="card-icon">
-            <LocationIcon className="icon" />
-          </span>
-          <span className="card-title font-14 truncate">
-            {studentData.location.city}, {studentData.location.state},
-            {studentData.location.country}
-          </span>
-        </div>
+          <div className="flex align-center m-b-5">
+            <span className="card-icon">
+              <LocationIcon className="icon" />
+            </span>
+            <span className="card-title font-14 truncate">
+              {studentData.location.city}, {studentData.location.state},
+              {studentData.location.country}
+            </span>
+          </div>
 
-        <div className="flex align-center m-b-5">
-          <span className="card-icon">
-            <ContactIcon className="icon" />
-          </span>
-          <span className="card-title font-14">{studentData.phone}</span>
-        </div>
+          <div className="flex align-center m-b-5">
+            <span className="card-icon">
+              <ContactIcon className="icon" />
+            </span>
+            <span className="card-title font-14">{studentData.phone}</span>
+          </div>
 
-        <div className="flex align-center">
-          <span className="card-icon">
-            <CakeIcon className="icon" />
-          </span>
-          <span className="card-title font-14">{dateofbirth}</span>
+          <div className="flex align-center">
+            <span className="card-icon">
+              <CakeIcon className="icon" />
+            </span>
+            <span className="card-title font-14">{dateofbirth}</span>
+          </div>
         </div>
       </div>
     </div>

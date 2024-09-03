@@ -7,7 +7,7 @@ import { ReactComponent as ExpandIcon } from "../assets/expandview.svg";
 const StudentList = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
   const [viewMode, setViewMode] = useState("list");
 
   useEffect(() => {
